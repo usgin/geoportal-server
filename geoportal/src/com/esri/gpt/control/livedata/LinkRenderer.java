@@ -14,7 +14,9 @@
  */
 package com.esri.gpt.control.livedata;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,8 +38,8 @@ import java.util.Map;
   }
 
   @Override
-  protected String getTemplateName() {
-    return "link.template";
+  protected List<String> getTemplateNames() {
+    return Arrays.asList(new String[]{"link.template"});
   }
 
   @Override

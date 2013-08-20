@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,7 +58,15 @@ public abstract class TemplateBasedRenderer implements IRenderer {
   }
   
   protected final StringBuilder readTemplate() throws IOException, URISyntaxException {
-    URL templateURL = getTemplateURL(getTemplateName());
+    StringBuilder sb = new StringBuilder();
+    for (String templateName: getTemplateNames()) {
+      sb.append(readTemplate(templateName));
+    }
+    return sb;
+  }
+  
+  protected final StringBuilder readTemplate(String templateName) throws IOException, URISyntaxException {
+    URL templateURL = getTemplateURL(templateName);
     InputStream stream = null;
     Reader reader = null;
     StringBuilder sb = new StringBuilder();
@@ -95,6 +104,6 @@ public abstract class TemplateBasedRenderer implements IRenderer {
   
   protected abstract Map<String,String> getTemplateAttributes();
   
-  protected abstract String getTemplateName();
+  protected abstract List<String> getTemplateNames();
   
 }
