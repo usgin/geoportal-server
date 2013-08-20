@@ -14,13 +14,13 @@
  */
 package com.esri.gpt.control.livedata;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * &lt;iframe&gt; renderer.
  */
-/*package*/ abstract class FrameRenderer implements IRenderer {
+/*package*/ abstract class FrameRenderer extends TemplateBasedRenderer {
 
   /**
    * Gets service URL.
@@ -29,33 +29,15 @@ import java.io.Writer;
   protected abstract String getUrl();
 
   @Override
-  public void render(Writer writer) throws IOException {
-    writer.write(
-      "{ init: function(widget){" +
-      "    var node = widget.getPlaceholder();"+
-      "    var style = widget.getMapStyle();"+
-      "    var styles = style.split(\";\");" +
-      "    for (var i=0; i<styles.length; i++) {" +
-      "       if (styles[i].indexOf(\"height\")>=0) {" +
-      "          var helm = styles[i].split(\":\");" +
-      "          if (helm.length==2) {" +
-      "             var height = parseInt(helm[1]);" +
-      "             height -= 2;" +
-      "             styles[i] = \"height: \" + height + \"px\";" +
-      "          }" +
-      "       }" +
-      "       if (styles[i].indexOf(\"width\")>=0) {" +
-      "          var welm = styles[i].split(\":\");" +
-      "          if (welm.length==2) {" +
-      "             var width = parseInt(welm[1]);" +
-      "             width -= 2;" +
-      "             styles[i] = \"width: \" + width + \"px\";" +
-      "          }" +
-      "       }" +
-      "    }" +
-      "    style = styles.join(\";\");" +
-      "    node.innerHTML = \"<iframe style=\\\"\" + style + \"\\\" src=\\\"" +getUrl()+ "\\\" scrolling=\\\"auto\\\"/>\";" +
-      "} }");
+  protected Map<String, String> getTemplateAttributes() {
+    HashMap<String,String> attrs = new HashMap<String, String>();
+    attrs.put("url", getUrl());
+    return attrs;
+  }
+
+  @Override
+  protected String getTemplateName() {
+    return "frame.template";
   }
 
   @Override

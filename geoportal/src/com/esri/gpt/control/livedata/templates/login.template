@@ -1,0 +1,3 @@
+{ init: function(widget){
+    gpt.LiveData.showLoginDlg();
+} }

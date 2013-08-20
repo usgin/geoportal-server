@@ -14,23 +14,27 @@
  */
 package com.esri.gpt.control.livedata;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Login dialog renderer.
  */
-public class LoginDlgRenderer implements IRenderer {
+public class LoginDlgRenderer extends TemplateBasedRenderer {
 
-public void render(Writer writer) throws IOException {
-  writer.write(
-    "{ init: function(widget){" +
-    "    gpt.LiveData.showLoginDlg();" +
-    "} }");
-}
+  @Override
+  protected Map<String, String> getTemplateAttributes() {
+    HashMap<String, String> attrs = new HashMap<String, String>();
+    return attrs;
+  }
 
-@Override
-public String toString() {
-  return LoginDlgRenderer.class.getSimpleName() + "()";
-}
+  @Override
+  protected String getTemplateName() {
+    return "login.template";
+  }
+
+  @Override
+  public String toString() {
+    return LoginDlgRenderer.class.getSimpleName() + "()";
+  }
 }

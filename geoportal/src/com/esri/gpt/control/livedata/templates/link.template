@@ -1,0 +1,4 @@
+{ init: function(widget){
+  var node = widget.getPlaceholder();
+  node.innerHTML = "<a href='{@url}'>{@url}</a>"; 
+}}

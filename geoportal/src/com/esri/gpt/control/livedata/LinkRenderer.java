@@ -14,13 +14,13 @@
  */
 package com.esri.gpt.control.livedata;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Simple link renderer.
  */
-/*package*/ abstract class LinkRenderer implements IRenderer {
+/*package*/ abstract class LinkRenderer extends TemplateBasedRenderer {
 
   /**
    * Gets service URL.
@@ -28,12 +28,16 @@ import java.io.Writer;
    */
   protected abstract String getUrl();
 
-  public void render(Writer writer) throws IOException {
-    writer.write(
-      "{ init: function(widget){" +
-      "    var node = widget.getPlaceholder();"+
-      "    node.innerHTML = \"<a href=\\\"" +getUrl()+ "\\\">" +getUrl()+ "</a>\";" +
-      "} }");
+  @Override
+  protected Map<String, String> getTemplateAttributes() {
+    HashMap<String,String> attrs = new HashMap<String, String>();
+    attrs.put("url", getUrl());
+    return attrs;
+  }
+
+  @Override
+  protected String getTemplateName() {
+    return "link.template";
   }
 
   @Override

@@ -1,0 +1,25 @@
+{ init: function(widget){
+    var node = widget.getPlaceholder();
+    var style = widget.getMapStyle();
+    var styles = style.split(";");
+    for (var i=0; i<styles.length; i++) {
+       if (styles[i].indexOf("height")>=0) {
+          var helm = styles[i].split(":");
+          if (helm.length==2) {
+             var height = parseInt(helm[1]);
+             height -= 2;
+             styles[i] = "height: " + height + "px";
+          }
+       }
+       if (styles[i].indexOf("width")>=0) {
+          var welm = styles[i].split(":");
+          if (welm.length==2) {
+             var width = parseInt(welm[1]);
+             width -= 2;
+             styles[i] = "width: " + width + "px";
+          }
+       }
+    }
+    style = styles.join(";");
+    node.innerHTML = "<object width=\""+width+"\" height=\""+height+"\"><param name=\"movie\" value=\"{@url}\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"{@url}\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\""+width+"\" height=\""+height+"\"></embed></object>";
+} }
