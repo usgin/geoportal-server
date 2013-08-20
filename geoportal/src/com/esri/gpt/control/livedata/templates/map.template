@@ -1,0 +1,30 @@
+{ init: function(widget){
+  var node = widget.getPlaceholder();
+
+  var style = widget.getMapStyle();
+  var geometryService = widget.getGeometryServiceUrl();
+  var mapService = widget.getMapServiceUrl();
+  var mapVisibleLayers = widget.getMapVisibleLayers();
+  var mapInitialExtent = widget.getMapInitialExtent();
+  var styles = style.split(";");
+  for (var i=0; i<styles.length; i++) {
+     if (styles[i].indexOf("height")>=0) {
+        var helm = styles[i].split(":");
+        if (helm.length==2) {
+           var height = parseInt(helm[1]);
+           height = height + {@heightAdjustment};
+           styles[i] = "height: " + height + "px";
+        }
+     }
+     if (styles[i].indexOf("width")>=0) {
+        var welm = styles[i].split(":");
+        if (welm.length==2) {
+           var width = parseInt(welm[1]);
+           width -= 2;
+           styles[i] = "width: " + width + "px";
+        }
+     }
+  }
+  style = styles.join(";");"
+  node.innerHTML = "Here goes map...";
+}}

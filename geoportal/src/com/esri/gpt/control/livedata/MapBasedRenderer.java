@@ -17,12 +17,15 @@ package com.esri.gpt.control.livedata;
 import com.esri.gpt.framework.geometry.Envelope;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Map based renderer.
  */
-/*packge*/ abstract class MapBasedRenderer implements IRenderer {
+/*packge*/ abstract class MapBasedRenderer extends TemplateBasedRenderer {
 
   /**
    * Gets layer declaration.
@@ -62,6 +65,19 @@ import java.io.Writer;
     return true;
   }
 
+  @Override
+  protected Map<String, String> getTemplateAttributes() {
+    HashMap<String,String> attrs = new HashMap<String, String>();
+    attrs.put("heightAdjustment", Integer.toString(getMapHeightAdjustment()));
+    return attrs;
+  }
+
+  @Override
+  protected List<String> getTemplateNames() {
+    return Arrays.asList(new String[]{"map.template"});
+  }
+
+  /*
   @Override
   public void render(Writer writer) throws IOException {
     String newLayer = newLayerDeclaration();
@@ -181,6 +197,7 @@ import java.io.Writer;
     }
     pwriter.println("} }");
   }
+  */
 
   /**
    * Writes toolbar node.
