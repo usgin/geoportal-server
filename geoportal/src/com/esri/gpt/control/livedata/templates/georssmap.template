@@ -112,7 +112,7 @@
   }
 
   dojo.query(".logo-med").style("bottom","40px");
-  node.liveDataLayer = new esri.gpt.layers.KmlLayer("{@url}","{@proxy}",geometryService);
+  node.liveDataLayer = new esri.gpt.layers.GeorssLayer("{@url}","{@proxy}",geometryService);
   dojo.connect(node.liveDataMap,"onLoad",null,function(map){map.addLayer(node.liveDataLayer);node.liveDataLayer.init(map);});
 
   if (widget.getMapServiceType()=="openstreet") {
