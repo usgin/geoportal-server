@@ -14,6 +14,8 @@
  */
 package com.esri.gpt.control.livedata;
 
+import java.util.Map;
+
 /**
  * ARCGIS Renderer.
  */
@@ -35,6 +37,13 @@ package com.esri.gpt.control.livedata;
   @Override
   protected boolean generateBaseMap() {
     return false;
+  }
+
+  @Override
+  protected Map<String, String> getTemplateAttributes() {
+    Map<String, String> attrs = super.getTemplateAttributes();
+    attrs.put("url", getUrl());
+    return attrs;
   }
 
   @Override

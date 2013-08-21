@@ -15,6 +15,7 @@
 package com.esri.gpt.control.livedata;
 
 import com.esri.gpt.framework.geometry.Envelope;
+import com.esri.gpt.framework.util.Val;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -69,6 +70,7 @@ import java.util.Map;
   protected Map<String, String> getTemplateAttributes() {
     HashMap<String,String> attrs = new HashMap<String, String>();
     attrs.put("heightAdjustment", Integer.toString(getMapHeightAdjustment()));
+    attrs.put("extent", Val.chkStr(createExtentDef(),"null"));
     return attrs;
   }
 
