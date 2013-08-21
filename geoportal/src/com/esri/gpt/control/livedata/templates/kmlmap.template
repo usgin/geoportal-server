@@ -63,6 +63,14 @@
                                 </span> \
                               </span> \
                             </span> \
+                            <span id=\"showhide-hook\" class=\"dijit dijitReset dijitLeft dijitInline dijitButton previewButton\"> \
+                              <span class=\"dijitReset dijitRight dijitInline\"> \
+                                <span class=\"dijitReset dijitInline\"> \
+                                  <input type=\"checkbox\" id=\"showhide\" checked=\"checked\" style=\"vertical-align: center;\"/> \
+                                  <label for=\"showhide\" style=\"vertical-align: center;\">" +widget.getBasemapLabel()+ "</label> \
+                                </span> \
+                              </span> \
+                            </span> \
                           </td> \
                         </tr> \
                       </table> \
@@ -72,8 +80,45 @@
   node.geometryService = (geometryService!=null && geometryService.length>0)? new esri.tasks.GeometryService(geometryService): null;
   node.liveDataMap = new esri.Map(widget.getMapId());
   dojo.connect(window,"onresize",node.liveDataMap,"reposition");
-  node.liveDataLayer = new esri.layers.ArcGISImageServiceLayer("{@url}");
+  if (widget.getMapServiceType()=="openstreet") {
+    node.baseMapLayer = new esri.layers.OpenStreetMapLayer();
+  } else if (widget.getMapServiceType()=="dynamic") {
+    node.baseMapLayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapService);
+    node.baseMapLayer.setImageFormat("jpg");
+  } else if (widget.getMapServiceType()=="tiled") {
+    node.baseMapLayer = new esri.layers.ArcGISTiledMapServiceLayer(mapService);
+  } else if (widget.getMapServiceType()=="wms") {
+    node.baseMapLayer = new esri.layers.WMSLayer(mapService);
+    if (esri.version < 2.4) {
+      node.baseMapLayer.extent = new esri.geometry.Extent({"xmin":-180,"ymin":-90,"xmax":180,"ymax":90,"spatialReference":{"wkid":4326}});
+    }
+    node.baseMapLayer.setVisibleLayers(eval(mapVisibleLayers));
+    node.baseMapLayer.setImageFormat("png");
+  } else if (widget.getMapServiceType()=="wmts") {
+      var layerInfo = new esri.layers.WMTSLayerInfo({
+          identifier: "world",
+          tileMatrixSet: "EPSG:4326",
+          format: "png"
+      });
+      var options = {
+        serviceMode: "KVP",
+        layerInfo: layerInfo
+      };
+    node.baseMapLayer = new esri.layers.WMTSLayer(mapService,options);
+  }
+  node.liveDataMap.addLayer(node.baseMapLayer);
+  if (widget.getMapServiceType() == "openstreet") {
+      dojo.create("div",{"class": "openstreetmapPreview", innerHTML: "Map data Â© OpenStreetMap contributors, CC-BY-SA"},"gpt_LiveData_0-preview_layers","last");
+  }
+
   dojo.query(".logo-med").style("bottom","40px");
+node.liveDataLayer = new esri.gpt.layers.KmlLayer("{@url}","{@proxy}",geometryService);
+  dojo.connect(node.liveDataMap,"onLoad",null,function(map){map.addLayer(node.liveDataLayer);node.liveDataLayer.init(map);});
+
+  if (widget.getMapServiceType()=="openstreet") {
+    node.liveDataMap.addLayer(node.liveDataLayer);
+    node.liveDataLayer.init(node.liveDataMap);
+  }
 
   node.liveDataMap.addLayer(node.liveDataLayer);
   dojo.connect(node.liveDataMap,"onLoad",null,function(map) {
@@ -97,6 +142,7 @@
   dojo.connect(dojo.byId("zoomfullext-hook"),"onclick",null,function(event) { gpt.LiveData.setExtent(node.liveDataMap,new esri.geometry.Extent({xmin: -90, ymin: -180, xmax: 90, ymax: 180, spatialReference: {wkid: 4326}}),node.geometryService); });
   dojo.connect(dojo.byId("zoomprev-hook"),"onclick",null,function(event) {node.navToolbar.zoomToPrevExtent();});
   dojo.connect(dojo.byId("zoomnext-hook"),"onclick",null,function(event) {node.navToolbar.zoomToNextExtent();});
+  dojo.connect(dojo.byId("showhide-hook"),"onclick",null,function(event) {if (dojo.byId("showhide").checked) {node.baseMapLayer.show();} else {node.baseMapLayer.hide();} });
 
   dijit.Tooltip.defaultPosition = ["below", "above"];
   new dijit.Tooltip( { connectId: ["zoomfullext-hook"], label: "<div class=\"toolTip\">" + widget.getTooltips()[0] + "</div>" } );

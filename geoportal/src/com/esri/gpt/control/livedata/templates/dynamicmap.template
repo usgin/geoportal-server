@@ -73,6 +73,7 @@
   node.liveDataMap = new esri.Map(widget.getMapId());
   dojo.connect(window,"onresize",node.liveDataMap,"reposition");
   node.liveDataLayer = new esri.layers.ArcGISDynamicMapServiceLayer("{@url}");
+  dojo.query(".logo-med").style("bottom","40px");
 
   node.liveDataMap.addLayer(node.liveDataLayer);
   dojo.connect(node.liveDataMap,"onLoad",null,function(map) {
@@ -96,6 +97,7 @@
   dojo.connect(dojo.byId("zoomfullext-hook"),"onclick",null,function(event) { gpt.LiveData.setExtent(node.liveDataMap,new esri.geometry.Extent({xmin: -90, ymin: -180, xmax: 90, ymax: 180, spatialReference: {wkid: 4326}}),node.geometryService); });
   dojo.connect(dojo.byId("zoomprev-hook"),"onclick",null,function(event) {node.navToolbar.zoomToPrevExtent();});
   dojo.connect(dojo.byId("zoomnext-hook"),"onclick",null,function(event) {node.navToolbar.zoomToNextExtent();});
+
   dijit.Tooltip.defaultPosition = ["below", "above"];
   new dijit.Tooltip( { connectId: ["zoomfullext-hook"], label: "<div class=\"toolTip\">" + widget.getTooltips()[0] + "</div>" } );
   new dijit.Tooltip( { connectId: ["zoomprev-hook"], label: "<div class=\"toolTip\">" + widget.getTooltips()[1] + "</div>" } );
