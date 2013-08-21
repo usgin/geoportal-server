@@ -1,0 +1,150 @@
+{ init: function(widget){
+  var node = widget.getPlaceholder();
+
+  var style = widget.getMapStyle();
+  var geometryService = widget.getGeometryServiceUrl();
+  var mapService = widget.getMapServiceUrl();
+  var mapVisibleLayers = widget.getMapVisibleLayers();
+  var mapInitialExtent = widget.getMapInitialExtent();
+  var styles = style.split(";");
+  for (var i=0; i<styles.length; i++) {
+     if (styles[i].indexOf("height")>=0) {
+        var helm = styles[i].split(":");
+        if (helm.length==2) {
+           var height = parseInt(helm[1]);
+           height = height + {@heightAdjustment};
+           styles[i] = "height: " + height + "px";
+        }
+     }
+     if (styles[i].indexOf("width")>=0) {
+        var welm = styles[i].split(":");
+        if (welm.length==2) {
+           var width = parseInt(welm[1]);
+           width -= 2;
+           styles[i] = "width: " + width + "px";
+        }
+     }
+  }
+  style = styles.join(";");
+  node.innerHTML = "<div id=\"navToolbar\" class=\"dijit dijitToolbar\"> \
+                      <table width=\"100%\" border=\"0\"> \
+                        <tr> \
+                          <td> \
+                            <span id=\"zoomfullext-hook\" class=\"dijit dijitReset dijitLeft dijitInline dijitButton previewButton\"> \
+                              <span class=\"dijitReset dijitRight dijitInline\"> \
+                                <span class=\"dijitReset dijitInline dijitButtonNode\"> \
+                                  <button waistate=\"labelledby-zoomin_label\" type=\"button\" name=\"\" class=\"dijitReset dijitStretch dijitButtonContents\" id=\"zoomfullext\" tabindex=\"-1\" style=\"-moz-user-select: none;\"> \
+                                    <span class=\"dijitReset dijitInline zoomfullextIcon\"> \
+                                      <span class=\"dijitReset dijitToggleButtonIconChar\">âœ“</span> \
+                                    </span> \
+                                  </button> \
+                                </span> \
+                              </span> \
+                            </span> \
+                            <span id=\"zoomprev-hook\" class=\"dijit dijitReset dijitLeft dijitInline dijitButton previewButton\"> \
+                              <span class=\"dijitReset dijitRight dijitInline\"> \
+                                <span class=\"dijitReset dijitInline dijitButtonNode\"> \
+                                  <button waistate=\"labelledby-zoomin_label\" type=\"button\" name=\"\" class=\"dijitReset dijitStretch dijitButtonContents\" id=\"zoomprev\" tabindex=\"-1\" style=\"-moz-user-select: none;\"> \
+                                    <span class=\"dijitReset dijitInline zoomprevIcon\"> \
+                                      <span class=\"dijitReset dijitToggleButtonIconChar\">âœ“</span> \
+                                    </span> \
+                                  </button> \
+                                </span> \
+                              </span> \
+                            </span> \
+                            <span id=\"zoomnext-hook\" class=\"dijit dijitReset dijitLeft dijitInline dijitButton previewButton\"> \
+                              <span class=\"dijitReset dijitRight dijitInline\"> \
+                                <span class=\"dijitReset dijitInline dijitButtonNode\"> \
+                                  <button waistate=\"labelledby-zoomin_label\" type=\"button\" name=\"\" class=\"dijitReset dijitStretch dijitButtonContents\" id=\"zoomnext\" tabindex=\"-1\" style=\"-moz-user-select: none;\"> \
+                                    <span class=\"dijitReset dijitInline zoomnextIcon\"> \
+                                      <span class=\"dijitReset dijitToggleButtonIconChar\">âœ“</span> \
+                                    </span> \
+                                  </button> \
+                                </span> \
+                              </span> \
+                            </span> \
+                            <span id=\"showhide-hook\" class=\"dijit dijitReset dijitLeft dijitInline dijitButton previewButton\"> \
+                              <span class=\"dijitReset dijitRight dijitInline\"> \
+                                <span class=\"dijitReset dijitInline\"> \
+                                  <input type=\"checkbox\" id=\"showhide\" checked=\"checked\" style=\"vertical-align: center;\"/> \
+                                  <label for=\"showhide\" style=\"vertical-align: center;\">" +widget.getBasemapLabel()+ "</label> \
+                                </span> \
+                              </span> \
+                            </span> \
+                          </td> \
+                        </tr> \
+                      </table> \
+                    </div> \
+                    <div id=\"" +widget.getMapId()+ "\" class=\"tundra\" style=\"" + widget.getMapStyle() + "\">";
+
+  node.geometryService = (geometryService!=null && geometryService.length>0)? new esri.tasks.GeometryService(geometryService): null;
+  node.liveDataMap = new esri.Map(widget.getMapId());
+  dojo.connect(window,"onresize",node.liveDataMap,"reposition");
+  if (widget.getMapServiceType()=="openstreet") {
+    node.baseMapLayer = new esri.layers.OpenStreetMapLayer();
+  } else if (widget.getMapServiceType()=="dynamic") {
+    node.baseMapLayer = new esri.layers.ArcGISDynamicMapServiceLayer(mapService);
+    node.baseMapLayer.setImageFormat("jpg");
+  } else if (widget.getMapServiceType()=="tiled") {
+    node.baseMapLayer = new esri.layers.ArcGISTiledMapServiceLayer(mapService);
+  } else if (widget.getMapServiceType()=="wms") {
+    node.baseMapLayer = new esri.layers.WMSLayer(mapService);
+    if (esri.version < 2.4) {
+      node.baseMapLayer.extent = new esri.geometry.Extent({"xmin":-180,"ymin":-90,"xmax":180,"ymax":90,"spatialReference":{"wkid":4326}});
+    }
+    node.baseMapLayer.setVisibleLayers(eval(mapVisibleLayers));
+    node.baseMapLayer.setImageFormat("png");
+  } else if (widget.getMapServiceType()=="wmts") {
+      var layerInfo = new esri.layers.WMTSLayerInfo({
+          identifier: "world",
+          tileMatrixSet: "EPSG:4326",
+          format: "png"
+      });
+      var options = {
+        serviceMode: "KVP",
+        layerInfo: layerInfo
+      };
+    node.baseMapLayer = new esri.layers.WMTSLayer(mapService,options);
+  }
+  node.liveDataMap.addLayer(node.baseMapLayer);
+  if (widget.getMapServiceType() == "openstreet") {
+      dojo.create("div",{"class": "openstreetmapPreview", innerHTML: "Map data Â© OpenStreetMap contributors, CC-BY-SA"},"gpt_LiveData_0-preview_layers","last");
+  }
+
+  dojo.query(".logo-med").style("bottom","40px");
+  node.liveDataLayer = new esri.gpt.layers.WMSLayer("{@url}","{@proxy}",geometryService);
+
+  if (widget.getMapServiceType()=="openstreet") {
+    node.liveDataMap.addLayer(node.liveDataLayer);
+  }
+
+  node.liveDataMap.addLayer(node.liveDataLayer);
+  dojo.connect(node.liveDataMap,"onLoad",null,function(map) {
+    var extentDef = {@extent};
+    var initialExtent = null;
+    if (mapInitialExtent!=null && mapInitialExtent.length>0) {
+      try {
+        initialExtent = eval("new esri.geometry.Extent({"+mapInitialExtent+"})");
+      } catch (err) {
+        initialExtent = null;
+      }
+    }
+    if (initialExtent!=null) {
+      gpt.LiveData.setExtent(node.liveDataMap,initialExtent,node.geometryService);
+    } else if (extentDef!=null) {
+      gpt.LiveData.setExtent(node.liveDataMap,extentDef,node.geometryService);
+    }
+  });
+
+  node.navToolbar = new esri.toolbars.Navigation(node.liveDataMap);
+  dojo.connect(dojo.byId("zoomfullext-hook"),"onclick",null,function(event) { gpt.LiveData.setExtent(node.liveDataMap,new esri.geometry.Extent({xmin: -90, ymin: -180, xmax: 90, ymax: 180, spatialReference: {wkid: 4326}}),node.geometryService); });
+  dojo.connect(dojo.byId("zoomprev-hook"),"onclick",null,function(event) {node.navToolbar.zoomToPrevExtent();});
+  dojo.connect(dojo.byId("zoomnext-hook"),"onclick",null,function(event) {node.navToolbar.zoomToNextExtent();});
+  dojo.connect(dojo.byId("showhide-hook"),"onclick",null,function(event) {if (dojo.byId("showhide").checked) {node.baseMapLayer.show();} else {node.baseMapLayer.hide();} });
+
+  dijit.Tooltip.defaultPosition = ["below", "above"];
+  new dijit.Tooltip( { connectId: ["zoomfullext-hook"], label: "<div class=\"toolTip\">" + widget.getTooltips()[0] + "</div>" } );
+  new dijit.Tooltip( { connectId: ["zoomprev-hook"], label: "<div class=\"toolTip\">" + widget.getTooltips()[1] + "</div>" } );
+  new dijit.Tooltip( { connectId: ["zoomnext-hook"], label: "<div class=\"toolTip\">" + widget.getTooltips()[2] + "</div>" } );
+
+}}
