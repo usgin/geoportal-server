@@ -14,6 +14,10 @@
  */
 package com.esri.gpt.control.livedata;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Sensor observation service renderer.
  */
@@ -24,6 +28,19 @@ package com.esri.gpt.control.livedata;
   protected abstract String getProxyUrl();
 
   protected abstract String getUrl();
+
+  @Override
+  protected List<String> getTemplateNames() {
+    return Arrays.asList(new String[]{"sosmap.template"});
+  }
+
+  @Override
+  protected Map<String, String> getTemplateAttributes() {
+    Map<String, String> attrs = super.getTemplateAttributes();
+    attrs.put("url", getUrl());
+    attrs.put("proxy", getProxyUrl());
+    return attrs;
+  }
 
   @Override
   protected String newLayerDeclaration() {
