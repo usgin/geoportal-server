@@ -15,9 +15,9 @@
 -- User table -------------------------------------------------------------------
 
 -- First drop table GPT_USER in order to drop sequence gpt_user_seq -------
-DROP TABLE gpt_user;
+DROP TABLE if exists gpt_user;
 
-DROP SEQUENCE gpt_user_seq;
+DROP SEQUENCE if exists gpt_user_seq;
 CREATE SEQUENCE gpt_user_seq
   INCREMENT 1
   MINVALUE 1
@@ -36,14 +36,14 @@ CREATE TABLE gpt_user
 WITHOUT OIDS;
 
 
-DROP INDEX gpt_user_idx1;
+DROP INDEX if exists gpt_user_idx1;
 CREATE INDEX gpt_user_idx1
   ON gpt_user
   USING btree
   (dn);
 
 
-DROP INDEX gpt_user_idx2;
+DROP INDEX if exists gpt_user_idx2;
 CREATE INDEX gpt_user_idx2
   ON gpt_user
   USING btree
@@ -51,7 +51,7 @@ CREATE INDEX gpt_user_idx2
 
 -- Saved search table ----------------------------------------------------------
 
-DROP TABLE gpt_search;
+DROP TABLE if exists gpt_search;
 CREATE TABLE gpt_search
 (
   uuid character varying(38) NOT NULL,
@@ -65,7 +65,7 @@ WITHOUT OIDS;
 
 -- Index: gpt_search_idx1 --------
 
-DROP INDEX gpt_search_idx1;
+DROP INDEX if exists gpt_search_idx1;
 CREATE INDEX gpt_search_idx1
   ON gpt_search
   USING btree
@@ -73,7 +73,7 @@ CREATE INDEX gpt_search_idx1
 
 -- Create Pending Harvesting Jobs table ------------------------------------------------
 
-DROP TABLE gpt_harvesting_jobs_pending;
+DROP TABLE if exists gpt_harvesting_jobs_pending;
 CREATE TABLE gpt_harvesting_jobs_pending
 (
   uuid character varying(38) NOT NULL,
@@ -91,7 +91,7 @@ WITHOUT OIDS;
 
 -- Index: fki_harvestjobspndg_harvesting ---------
 
-DROP INDEX fki_harvestjobspndg_harvesting;
+DROP INDEX if exists fki_harvestjobspndg_harvesting;
 CREATE INDEX fki_harvestjobspndg_harvesting
   ON gpt_harvesting_jobs_pending
   USING btree
@@ -99,7 +99,7 @@ CREATE INDEX fki_harvestjobspndg_harvesting
 
 -- Index: gpt_hjobspndg_idx1 ----------
 
-DROP INDEX gpt_hjobspndg_idx1;
+DROP INDEX if exists gpt_hjobspndg_idx1;
 CREATE INDEX gpt_hjobspndg_idx1
   ON gpt_harvesting_jobs_pending
   USING btree
@@ -107,7 +107,7 @@ CREATE INDEX gpt_hjobspndg_idx1
 
 -- Index: gpt_hjobspndg_idx2 -------
 
-DROP INDEX gpt_hjobspndg_idx2;
+DROP INDEX if exists gpt_hjobspndg_idx2;
 CREATE INDEX gpt_hjobspndg_idx2
   ON gpt_harvesting_jobs_pending
   USING btree
@@ -115,7 +115,7 @@ CREATE INDEX gpt_hjobspndg_idx2
 
 -- Index: gpt_hjobspndg_idx3 -------- 
 
-DROP INDEX gpt_hjobspndg_idx3;
+DROP INDEX if exists gpt_hjobspndg_idx3;
 CREATE INDEX gpt_hjobspndg_idx3
   ON gpt_harvesting_jobs_pending
   USING btree
@@ -127,7 +127,7 @@ CREATE INDEX gpt_hjobspndg_idx3
 
 -- Table: gpt_harvesting_jobs_completed ---------------
 
-DROP TABLE gpt_harvesting_jobs_completed;
+DROP TABLE if exists gpt_harvesting_jobs_completed;
 CREATE TABLE gpt_harvesting_jobs_completed
 (
   uuid character varying(38) NOT NULL,
@@ -143,7 +143,7 @@ WITHOUT OIDS;
 
 -- Index: fki_gpt_harvjobscmpltd_harvesting ------
 
-DROP INDEX fki_gpt_harvjobscmpltd_harvesting;
+DROP INDEX if exists fki_gpt_harvjobscmpltd_harvesting;
 CREATE INDEX fki_gpt_harvjobscmpltd_harvesting
   ON gpt_harvesting_jobs_completed
   USING btree
@@ -151,7 +151,7 @@ CREATE INDEX fki_gpt_harvjobscmpltd_harvesting
 
 -- Index: gpt_hjobscmpltd_idx1 ---------
 
-DROP INDEX gpt_hjobscmpltd_idx1;
+DROP INDEX if exists gpt_hjobscmpltd_idx1;
 CREATE INDEX gpt_hjobscmpltd_idx1
   ON gpt_harvesting_jobs_completed
   USING btree
@@ -162,7 +162,7 @@ CREATE INDEX gpt_hjobscmpltd_idx1
 
 -- Table: gpt_harvesting_history --------
 
-DROP TABLE gpt_harvesting_history;
+DROP TABLE if exists gpt_harvesting_history;
 CREATE TABLE gpt_harvesting_history
 (
   uuid character varying(38) NOT NULL,
@@ -179,7 +179,7 @@ WITHOUT OIDS;
 
 -- Index: fki_gpt_harvhist_harvesting_fk ------------
 
-DROP INDEX fki_gpt_harvhist_harvesting_fk;
+DROP INDEX if exists fki_gpt_harvhist_harvesting_fk;
 CREATE INDEX fki_gpt_harvhist_harvesting_fk
   ON gpt_harvesting_history
   USING btree
