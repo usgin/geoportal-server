@@ -2,6 +2,9 @@ z_*
 smis/
 geoportal/www/WEB-INF/lib/
 
+# rename gpt-template.xml to gpt.xml when put in local connection secrets
+src/gpt/config/gpt.xml
+
 #################
 ## Eclipse
 #################
