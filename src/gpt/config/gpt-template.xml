@@ -16,7 +16,9 @@
 -->
 <gptConfig version="1.2.9">
 
-    <databaseReference name="gpt" jndiName="jdbc/gpt"/>
+    <!-- <databaseReference name="gpt" jndiName="jdbc/gpt"/> -->
+	
+	<databaseReference name="gpt" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/geoportal?useUnicode=true&amp;characterEncoding=utf8" username="dev" password="adminadmin"/>
     
     <!-- Mail server configuration.
         - smtpHost: mail server SMTP host

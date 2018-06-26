@@ -15,10 +15,33 @@
  limitations under the License.
 -->
 <schemas>
-  <schema fileName="gpt/metadata/fgdc/fgdc-definition.xml"/>
+
+  <schema fileName="gpt/metadata/ogc/ogc-definition.xml"/> 
+  <schema fileName="gpt/metadata/ogc/cswRecord-definition.xml"/>
+  <schema fileName="gpt/metadata/other/georss-definition.xml"/> 
+  <schema fileName="gpt/metadata/other/opensearch-definition.xml"/>
+  <schema fileName="gpt/metadata/other/oaidc-definition.xml"/>
+
+  <!--USGIN Schemas -->
+  <schema fileName="gpt/metadata/iso/usgin/usgin-iso-19115-definition.xml"/>
+  <schema fileName="gpt/metadata/iso/usgin/usgin-19119-definition-service.xml"/> 
+  <!--End USGIN Schemas -->
+  
+  <!-- Conversion to USGIN Schemas -->
+<!--   <schema fileName="gpt/metadata/ogc/tousgin/csw-definition.xml"/>
+  <schema fileName="gpt/metadata/ogc/tousgin/wms-definition.xml"/>  -->
+  <!-- End Conversion to USGIN Schemas -->
+  
+  <!-- Iso to USGIN schemas -->
+  <schema fileName="gpt/metadata/iso/tousgin/ISO-to-USGIN-19115-data-definition.xml"/>
+  <schema fileName="gpt/metadata/iso/tousgin/ISO-to-USGIN-19119-service-definition.xml"/>
+  
+  <!-- end addition from USGIN gpt 2010 -->
+  
+ <!--  <schema fileName="gpt/metadata/fgdc/fgdc-definition.xml"/>
   <schema fileName="gpt/metadata/esri/esri-arcgis-definition.xml"/>
   <schema fileName="gpt/metadata/esri/esri-iso-definition.xml"/>
-    
+    -->
   <schema fileName="gpt/metadata/dc/dc-definition.xml"/>
   <!--  
   <schema fileName="gpt/metadata/iso/nap/nap-iso-19115-definition.xml"/>
@@ -30,8 +53,8 @@
     <schema fileName="gpt/metadata/iso/gemini/gemini-iso-19115-definition.xml"/>
     <schema fileName="gpt/metadata/iso/gemini/gemini-iso-19119-definition.xml"/>
   -->
-  <schema fileName="gpt/metadata/iso/Gemini2_R1r2/gemini-iso-19115-definition.xml"/>
-  <schema fileName="gpt/metadata/iso/Gemini2_R1r2/gemini-iso-19119-definition.xml"/>
+<!--   <schema fileName="gpt/metadata/iso/Gemini2_R1r2/gemini-iso-19115-definition.xml"/>
+  <schema fileName="gpt/metadata/iso/Gemini2_R1r2/gemini-iso-19119-definition.xml"/> -->
   
   <!--  NOTE: Only one of INSPIRE or standard ISO should be enabled 
   
@@ -40,21 +63,17 @@
   
    --> 
   
-  <schema fileName="gpt/metadata/iso/iso-19115-definition.xml"/>
+<!--   <schema fileName="gpt/metadata/iso/iso-19115-definition.xml"/>
   <schema fileName="gpt/metadata/iso/iso-19119-definition.xml"/>
 
-  <schema fileName="gpt/metadata/iso/iso-19115-2-definition.xml"/>
+  <schema fileName="gpt/metadata/iso/iso-19115-2-definition.xml"/> -->
   
    <!-- ATOM 1.0 -->
-  <schema fileName="gpt/metadata/atom/atom-1-0-entry-definition.xml"/> 
-  <schema fileName="gpt/metadata/atom/atom-1-0-feed-definition.xml"/> 
+<!--   <schema fileName="gpt/metadata/atom/atom-1-0-entry-definition.xml"/> 
+  <schema fileName="gpt/metadata/atom/atom-1-0-feed-definition.xml"/>  -->
    
-  <schema fileName="gpt/metadata/ogc/ogc-definition.xml"/> 
-  <schema fileName="gpt/metadata/ogc/cswRecord-definition.xml"/>
-  <schema fileName="gpt/metadata/other/georss-definition.xml"/> 
-  <schema fileName="gpt/metadata/other/opensearch-definition.xml"/>
-  <schema fileName="gpt/metadata/other/oaidc-definition.xml"/> 
+  
   
   <!-- DCAT -->
-  <schema fileName="gpt/metadata/dcat/dcat-definition.xml"/>
+<!--   <schema fileName="gpt/metadata/dcat/dcat-definition.xml"/> -->
 </schemas>
