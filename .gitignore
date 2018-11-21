@@ -176,3 +176,4 @@ pip-log.txt
 /geoportal/maven/geoportal-war/nb-configuration.xml
 /geoportal/maven/geoportal-jar/nb-configuration.xml
 src/gpt/config/gpt - Copyxml
+src/gpt/resources/gpt2.properties.bku20180625
